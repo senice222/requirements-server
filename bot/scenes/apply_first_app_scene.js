@@ -120,7 +120,7 @@ const ApplyApplication = new Scenes.WizardScene(
 
 				downloadStream.data.pipe(fileStream);
 
-				const publicFileUrl = `https://consultantnlgpanel.ru/api/uploads/${fileName}`;
+				const publicFileUrl = `https://orders.consultantnlgpanel.ru/api/uploads/${fileName}`;
 				ctx.wizard.state.data.fileAct.push(publicFileUrl);
 
 				if (ctx.wizard.state.data.fileAct.length === 1) {
@@ -170,7 +170,7 @@ const ApplyApplication = new Scenes.WizardScene(
 					await user.save();
 
 					// Отправка письма
-					sendMail(application, `https://consultantnlgpanel.ru/application/${application._id}`, 'new');
+					sendMail(application, `https://orders.consultantnlgpanel.ru/application/${application._id}`, 'new');
 
 					await ctx.reply(
 						`<b>✅ Заявка №${application.normalId} создана и отправлена на рассмотрение!</b>\n<i>В ближайшее время мы сообщим\nВам время рассмотрения заявки</i>`,
@@ -208,7 +208,7 @@ const ApplyApplication = new Scenes.WizardScene(
                     });
 
                     downloadStream.data.pipe(fileStream);
-                    const publicFileUrl = `https://consultantnlgpanel.ru/api/uploads/${fileName}`;
+                    const publicFileUrl = `https://orders.consultantnlgpanel.ru/api/uploads/${fileName}`;
                     data = publicFileUrl;
                 } else if (ctx.message.photo) {
                     const photos = ctx.message.photo;
@@ -226,7 +226,7 @@ const ApplyApplication = new Scenes.WizardScene(
                     });
 
                     downloadStream.data.pipe(fileStream);
-                    const publicFileUrl = `https://consultantnlgpanel.ru/api/uploads/${fileName}`;
+                    const publicFileUrl = `https://orders.consultantnlgpanel.ru/api/uploads/${fileName}`;
                     data = publicFileUrl;
                 } else {
                     data = ctx.message.text;
