@@ -43,7 +43,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
         ctx.wizard.state.data.fileAct = [];
         ctx.wizard.state.data.fileExplain = [];
 
-        const msg = await ctx.reply(`<b>⚙️ Отправьте файл акта и ответ на него, если он есть.</b>\n\n<i>Пожалуйста, отправляйте по одному файлу за раз. Вы можете отправить несколько файлов.</i>`, {
+        const msg = await ctx.reply(`<b>⚙️ Отправьте файл требования</b>\n\n<i>Пожалуйста, отправляйте по одному файлу за раз. Вы можете отправить несколько файлов.</i>`, {
             reply_markup: cancelKeyboard.reply_markup,
             parse_mode: "HTML"
         });
