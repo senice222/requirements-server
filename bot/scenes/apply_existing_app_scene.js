@@ -85,7 +85,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
 
                 downloadStream.data.pipe(fileStream);
 
-                const publicFileUrl = `https://consultantnlgpanel.ru/api/uploads/${fileName}`;
+                const publicFileUrl = `https://orders.consultantnlgpanel.ru/api/uploads/${fileName}`;
                 ctx.wizard.state.data.fileAct.push(publicFileUrl);
 
                 if (ctx.wizard.state.data.fileAct.length === 1) {
@@ -173,7 +173,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
                     });
 
                     downloadStream.data.pipe(fileStream);
-                    const publicFileUrl = `https://consultantnlgpanel.ru/api/uploads/${fileName}`;
+                    const publicFileUrl = `https://orders.consultantnlgpanel.ru/api/uploads/${fileName}`;
                     data = publicFileUrl;
                 } else if (ctx.message.photo) {
                     const photos = ctx.message.photo;
@@ -191,7 +191,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
                     });
 
                     downloadStream.data.pipe(fileStream);
-                    const publicFileUrl = `https://consultantnlgpanel.ru/api/uploads/${fileName}`;
+                    const publicFileUrl = `https://orders.consultantnlgpanel.ru/api/uploads/${fileName}`;
                     data = publicFileUrl;
                 } else {
                     data = ctx.message.text;

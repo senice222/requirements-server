@@ -213,7 +213,7 @@ export const getClarifications = (app, bot) => {
                 return res.status(404).json("Application not found");
             }
 
-            const fileUrls = files.map(file => `https://consultantnlgpanel.ru/api/uploads/${file.filename}`);
+            const fileUrls = files.map(file => `https://orders.consultantnlgpanel.ru/api/uploads/${file.filename}`);
 
 
             application.status = "На уточнении";
