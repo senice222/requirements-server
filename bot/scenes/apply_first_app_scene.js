@@ -21,7 +21,7 @@ const uploadDirectory = path.join(__dirname, '../../api/uploads');
 if (!fs.existsSync(uploadDirectory)) {
 	fs.mkdirSync(uploadDirectory, { recursive: true });
 }
-const fileInfoPath = path.join(__dirname, '../../utils/Предоставление_информации_по_акту.docx');
+const fileInfoPath = path.join(__dirname, '../../utils/Предоставление_информации_по_требованию.doc');
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -59,7 +59,7 @@ const ApplyApplication = new Scenes.WizardScene(
 			ctx.wizard.state.data['name'] = ctx.message.text;
 			ctx.wizard.state.data['id'] = ctx.from.id
 			const msg = await ctx.reply(
-				`<b>⚙️ Введите ИНН компании, от которой отправляется акт:</b> \n\n<i>Пример: 7877675123</i>`,
+				`<b>⚙️ Введите ИНН компании, от которой отправляется требование:</b> \n\n<i>Пример: 7877675123</i>`,
 				{
 					reply_markup: cancelKeyboard.reply_markup,
 					parse_mode: 'HTML',

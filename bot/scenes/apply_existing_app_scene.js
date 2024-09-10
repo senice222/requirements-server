@@ -21,7 +21,7 @@ const uploadDirectory = path.join(__dirname, '../../api/uploads');
 if (!fs.existsSync(uploadDirectory)) {
     fs.mkdirSync(uploadDirectory, { recursive: true });
 }
-const fileInfoPath = path.join(__dirname, '../../utils/Предоставление_информации_по_акту.docx');
+const fileInfoPath = path.join(__dirname, '../../utils/Предоставление_информации_по_требованию.doc');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -135,7 +135,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
                     await user.save();
 
                     // Отправка письма
-                    sendMail(application, `https://kvik.cc/application/${application._id}`, 'new');
+                    sendMail(application, `https://orders.consultantnlgpanel.ru/application/${application._id}`, 'new');
 
                     await ctx.reply(
                         `<b>✅ Заявка №${application.normalId} создана и отправлена на рассмотрение!</b>\n<i>В ближайшее время мы сообщим\nВам время рассмотрения заявки</i>`,

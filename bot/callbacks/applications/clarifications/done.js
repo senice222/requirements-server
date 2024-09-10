@@ -30,7 +30,7 @@ const done = (bot) => {
             application.status = "На рассмотрении";
             application.history.push({ label: "Ответ на уточнение" });
             application.history.push({combinedClarifications, status: "answer"})
-            sendMail(application, `http://localhost:5173/application/${application._id}`, 'clarification')
+            sendMail(application, `https://orders.consultantnlgpanel.ru/application/${application._id}`, 'clarification')
             await application.save();
 
             await ctx.reply(`Уточнения по заявке №${application.normalId} отправлены.`, {
