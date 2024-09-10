@@ -45,7 +45,7 @@ const ApplyApplication = new Scenes.WizardScene(
 		ctx.wizard.state.data.additionalInformation = []
 
 		const msg = await ctx.reply(
-			`<b>⚙️ Введите полное название компании, от которой отправляется акт:</b> \n\n<i>Пример: ООО "Компания"</i>`,
+			`<b>⚙️ Введите полное название компании, от которой отправляется требование:</b> \n\n<i>Пример: ООО "Компания"</i>`,
 			{
 				reply_markup: cancelKeyboard.reply_markup,
 				parse_mode: 'HTML',
