@@ -23,6 +23,10 @@ const ApplicationSchema = new mongoose.Schema(
             required: true,
             default: true
         },
+        createdAt: {
+            type: Date,
+            default: Date.now 
+        },
         status: {
             type: String,
             required: true,

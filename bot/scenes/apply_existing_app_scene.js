@@ -128,6 +128,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
                         inn: doc.inn,
                         fileAct,
                         fileExplain,
+                        createdAt: new Date()
                     });
 
                     await application.save();
