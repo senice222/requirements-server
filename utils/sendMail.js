@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 export const sendMail = (application, link, type) => {
     const subject = type === 'clarification'
         ? `Поступили уточнения по заявке №${application.normalId}`
-        : `Поступила новая заявка №${application.normalId}`
+        : `Поступили требования №${application.normalId}`
 
     const styledEmailContent = `
     <p>Компания: ${application.name}</p>
@@ -24,7 +24,7 @@ export const sendMail = (application, link, type) => {
 `
 
     const mailOptions = {
-        from: '"Ответ на акты" <n.socialmedia12@gmail.com>',
+        from: '"Ответ на требования" <n.socialmedia12@gmail.com>',
         to: process.env.RECEIVER,
         subject,
         html: styledEmailContent
