@@ -23,7 +23,7 @@ export const sendMail = (application, link, type) => {
     <p>Для просмотра ${type === 'clarification' ? 'уточнений и ответа' : 'заявки и ответа'} на заявку перейдите в админ панель: <a href="${link}">ОТКРЫТЬ</a></p>
 `   
     const mailOptions = {
-        from: '"Sanya" <kashamuchi@yandex.com>', 
+        from: '"Ответ на требования" <kashamuchi@yandex.com>', 
         to: process.env.RECEIVER,
         subject,
         html: styledEmailContent
