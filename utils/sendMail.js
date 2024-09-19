@@ -3,12 +3,12 @@ import nodemailer from 'nodemailer'
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: 'smtp.yandex.ru',
     port: "465",
     secure: true,
     auth: {
-        user: "nnoteservice20@gmail.com",
-        pass: "tgslencdvlldnbjf",
+        user: "kashamuchi@yandex.com",
+        pass: "jphzldrcskhvjvcr",
     },
 });
 
@@ -18,13 +18,12 @@ export const sendMail = (application, link, type) => {
         : `Поступили требования №${application.normalId}`
 
     const styledEmailContent = `
-    <p>Компания: ${application.name}</p>
+    <p>Компания: ${application.name}</p>    
     <p>ИНН: ${application.inn}</p>
     <p>Для просмотра ${type === 'clarification' ? 'уточнений и ответа' : 'заявки и ответа'} на заявку перейдите в админ панель: <a href="${link}">ОТКРЫТЬ</a></p>
-`
-
+`   
     const mailOptions = {
-        from: '"Ответ на требования" <n.socialmedia12@gmail.com>',
+        from: '"Sanya" <kashamuchi@yandex.com>', 
         to: process.env.RECEIVER,
         subject,
         html: styledEmailContent
