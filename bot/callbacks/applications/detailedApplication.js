@@ -31,7 +31,8 @@ const detailedApplication = (bot) => {
             if (validFiles.length > 0) {
                 validFiles.forEach((file) => {
                     const fileName = extractFileName(file);
-                    messageText += `\n<b>${fileName}</b>: <a href="https://orders.consultantnlgpanel.ru/api/uploads/${file}">Скачать</a>\n`;
+                    const encodedFile = encodeURIComponent(file); // Кодируем файл для корректного URL
+                    messageText += `\n<b>${fileName}</b>: <a href="https://orders.consultantnlgpanel.ru/api/uploads/${encodedFile}">Скачать</a>\n`;
                 });
                 messageText += `\n----\nПри возникновении вопросов по заявке обращайтесь на почту adm01@uk-fp.ru. В теме письма укажите “Вопрос по заявке №${application.normalId}”.`
                 await ctx.editMessageText(
