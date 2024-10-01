@@ -173,9 +173,9 @@ export const reviewedApplication = (app, bot) => {
             if (!application) {
                 return res.status(404).json({ message: 'Application not found' });
             }
-            if (comments) {
+            if (comments || files.length >= 0) {
                 const historyEntry = { label: comments, admin, type: "comment" };
-                if (files.length > 0) {
+                if (files.length >= 0) {
                     historyEntry.fileUrls = files;
                 }
                 application.history.push(historyEntry);
