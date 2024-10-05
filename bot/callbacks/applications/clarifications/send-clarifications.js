@@ -13,7 +13,7 @@ const sendClarifications = (bot) => {
     bot.action([/clarify_(.+)/], async (ctx) => {
         const applicationId = ctx.match[1]
         await ctx.reply(`Отправьте уточнения в этот чат. Можно отправить как текст, так и файлы. Как закончите отправлять, нажмите "Готово".`)
-        
+
         ctx.session.applicationId = applicationId
         ctx.session.clarifications = []
         ctx.session.collectingClarifications = true
@@ -44,7 +44,7 @@ const sendClarifications = (bot) => {
         if (ctx.session.collectingClarifications) {
             const file = ctx.message.document
             const fileUrl = await ctx.telegram.getFileLink(file.file_id)
-	    const fileName = Buffer.from(file.file_name, 'binary').toString('utf8');            
+            const fileName = Buffer.from(file.file_name, 'binary').toString('utf8');
             ctx.session.clarifications.push({
                 type: 'document',
                 fileId: file.file_id,
