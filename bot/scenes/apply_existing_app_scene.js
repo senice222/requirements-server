@@ -5,7 +5,7 @@ import path from 'path';
 import multer from 'multer';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { v4 as uuidv4 } from 'uuid';  
+import { v4 as uuidv4 } from 'uuid';
 import UserModel from "../../models/User.model.js";
 import ApplicationModel from "../../models/Application.model.js";
 import { sendMail } from "../../utils/sendMail.js";
@@ -54,7 +54,7 @@ const ApplyExistingApplication = new Scenes.WizardScene(
     },
     async ctx => {
         if (ctx.updateType === 'callback_query') {
-	const callbackData = ctx.update.callback_query.data;
+            const callbackData = ctx.update.callback_query.data;
             if (ctx.update.callback_query.data === '?done_act') {
                 const msg = await ctx.replyWithDocument({ source: fileInfoPath }, {
                     caption: '<b>❗ Скачайте и заполните приложенный выше опросный лист.\n\n⚙️ Отправьте заполненный опросный лист, а также дополнительные документы, если они есть. Список дополнительных документов указан в конце документа.</b>\n\n<i>Пожалуйста, отправляйте по одному файлу за раз. Вы можете отправить несколько файлов.</i>',
@@ -66,61 +66,61 @@ const ApplyExistingApplication = new Scenes.WizardScene(
 
                 ctx.wizard.state.deleteMessages.push(msg.message_id);
                 ctx.wizard.next();
-            }else if (callbackData.startsWith('?detailedApp_')) {
-        // Действие для кнопки с ?detailedApp_
-	ctx.wizard.state = {};
-        const applicationId = callbackData.split('_')[1]; // Получаем ID заявки из callback_data
-        try {
-            const application = await ApplicationModel.findById(applicationId);
-            if (!application) {
-                await ctx.reply('Заявка не найдена.');
-                return;
-            }
+            } else if (callbackData.startsWith('?detailedApp_')) {
+                // Действие для кнопки с ?detailedApp_
+                ctx.wizard.state = {};
+                const applicationId = callbackData.split('_')[1]; // Получаем ID заявки из callback_data
+                try {
+                    const application = await ApplicationModel.findById(applicationId);
+                    if (!application) {
+                        await ctx.reply('Заявка не найдена.');
+                        return;
+                    }
 
-            // Формируем текст заявки
-            let messageText = `<b>Заявка №${application.normalId}</b>\n<b>Статус: </b>${application.status}`;
-            if (application.dateAnswer) {
-                messageText += `\nБудет рассмотрена до: ${application.dateAnswer}`;
-            }
-            if (application.status === "На уточнении") {
-                messageText += "\n–––––\n<i>Проверьте сообщение об уточнениях в этом чате выше и отправьте их.</i>\n–––––";
-            }
+                    // Формируем текст заявки
+                    let messageText = `<b>Заявка №${application.normalId}</b>\n<b>Статус: </b>${application.status}`;
+                    if (application.dateAnswer) {
+                        messageText += `\nБудет рассмотрена до: ${application.dateAnswer}`;
+                    }
+                    if (application.status === "На уточнении") {
+                        messageText += "\n–––––\n<i>Проверьте сообщение об уточнениях в этом чате выше и отправьте их.</i>\n–––––";
+                    }
 
-            const validFiles = application.fileAnswer.filter(file => file.trim() !== '');
-            if (application.comments) {
-                messageText += `\n---\n<b>Ответ по заявке:</b>\n<b>Комментарии:</b> ${application.comments || 'Нет комментариев'}`;
-            }
+                    const validFiles = application.fileAnswer.filter(file => file.trim() !== '');
+                    if (application.comments) {
+                        messageText += `\n---\n<b>Ответ по заявке:</b>\n<b>Комментарии:</b> ${application.comments || 'Нет комментариев'}`;
+                    }
 
-            if (validFiles.length > 0) {
-                validFiles.forEach((file) => {
-                    const fileName = extractFileName(file);
-                    const encodedFile = encodeURIComponent(file); // Кодируем файл для корректного URL
-                    messageText += `\n<b>${fileName}</b>: <a href="https://orders.consultantnlgpanel.ru/api/uploads/${encodedFile}">Скачать</a>\n`;
-                });
-            }
+                    if (validFiles.length > 0) {
+                        validFiles.forEach((file) => {
+                            const fileName = extractFileName(file);
+                            const encodedFile = encodeURIComponent(file); // Кодируем файл для корректного URL
+                            messageText += `\n<b>${fileName}</b>: <a href="https://orders.consultantnlgpanel.ru/api/uploads/${encodedFile}">Скачать</a>\n`;
+                        });
+                    }
 
-            messageText += `\n----\nПри возникновении вопросов по заявке обращайтесь на почту adm01@uk-fp.ru. В теме письма укажите “Вопрос по заявке №${application.normalId}”.`;
+                    messageText += `\n----\nПри возникновении вопросов по заявке обращайтесь на почту adm01@uk-fp.ru. В теме письма укажите “Вопрос по заявке №${application.normalId}”.`;
 
-            await ctx.editMessageText(
-                messageText,
-                {
-                    reply_markup: Markup.inlineKeyboard([
-                        [Markup.button.callback('Вернуться назад', `?myApplications`)]
-                    ]).resize().reply_markup,
-                    parse_mode: 'HTML'
+                    await ctx.editMessageText(
+                        messageText,
+                        {
+                            reply_markup: Markup.inlineKeyboard([
+                                [Markup.button.callback('Вернуться назад', `?myApplications`)]
+                            ]).resize().reply_markup,
+                            parse_mode: 'HTML'
+                        }
+                    );
+
+                } catch (error) {
+                    console.error('Error in detailedApplication:', error);
+                    await ctx.reply('Произошла ошибка при загрузке заявки. Пожалуйста, попробуйте снова.');
                 }
-            );
 
-        } catch (error) {
-            console.error('Error in detailedApplication:', error);
-            await ctx.reply('Произошла ошибка при загрузке заявки. Пожалуйста, попробуйте снова.');
-        }
-
-    } else if (callbackData === '?cancelScene') {
-        // Действие для отмены сцены
-        await ctx.reply('Вы отменили действие.');
-        ctx.scene.leave();
-    }
+            } else if (callbackData === '?cancelScene') {
+                // Действие для отмены сцены
+                await ctx.reply('Вы отменили действие.');
+                ctx.scene.leave();
+            }
         } else if (ctx.message.document || ctx.message.photo) {
             try {
                 const file = ctx.message.document || ctx.message.photo[ctx.message.photo.length - 1];
@@ -211,6 +211,60 @@ const ApplyExistingApplication = new Scenes.WizardScene(
                     const msg = await ctx.reply('<b>Произошла ошибка при создании заявки. Попробуйте снова.</b>', { parse_mode: 'HTML' });
                     ctx.wizard.state.deleteMessages.push(msg.message_id);
                 }
+            } else if (ctx.update.callback_query.data.startsWith('?detailedApp_')) {
+                // Действие для кнопки с ?detailedApp_
+                ctx.wizard.state = {};
+                const applicationId = callbackData.split('_')[1]; // Получаем ID заявки из callback_data
+                try {
+                    const application = await ApplicationModel.findById(applicationId);
+                    if (!application) {
+                        await ctx.reply('Заявка не найдена.');
+                        return;
+                    }
+
+                    // Формируем текст заявки
+                    let messageText = `<b>Заявка №${application.normalId}</b>\n<b>Статус: </b>${application.status}`;
+                    if (application.dateAnswer) {
+                        messageText += `\nБудет рассмотрена до: ${application.dateAnswer}`;
+                    }
+                    if (application.status === "На уточнении") {
+                        messageText += "\n–––––\n<i>Проверьте сообщение об уточнениях в этом чате выше и отправьте их.</i>\n–––––";
+                    }
+
+                    const validFiles = application.fileAnswer.filter(file => file.trim() !== '');
+                    if (application.comments) {
+                        messageText += `\n---\n<b>Ответ по заявке:</b>\n<b>Комментарии:</b> ${application.comments || 'Нет комментариев'}`;
+                    }
+
+                    if (validFiles.length > 0) {
+                        validFiles.forEach((file) => {
+                            const fileName = extractFileName(file);
+                            const encodedFile = encodeURIComponent(file); // Кодируем файл для корректного URL
+                            messageText += `\n<b>${fileName}</b>: <a href="https://orders.consultantnlgpanel.ru/api/uploads/${encodedFile}">Скачать</a>\n`;
+                        });
+                    }
+
+                    messageText += `\n----\nПри возникновении вопросов по заявке обращайтесь на почту adm01@uk-fp.ru. В теме письма укажите “Вопрос по заявке №${application.normalId}”.`;
+
+                    await ctx.editMessageText(
+                        messageText,
+                        {
+                            reply_markup: Markup.inlineKeyboard([
+                                [Markup.button.callback('Вернуться назад', `?myApplications`)]
+                            ]).resize().reply_markup,
+                            parse_mode: 'HTML'
+                        }
+                    );
+
+                } catch (error) {
+                    console.error('Error in detailedApplication:', error);
+                    await ctx.reply('Произошла ошибка при загрузке заявки. Пожалуйста, попробуйте снова.');
+                }
+
+            } else if (callbackData === '?cancelScene') {
+                // Действие для отмены сцены
+                await ctx.reply('Вы отменили действие.');
+                ctx.scene.leave();
             }
         } else if (ctx.message.document || ctx.message.text) {
             try {
