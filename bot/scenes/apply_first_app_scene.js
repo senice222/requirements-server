@@ -56,7 +56,19 @@ const ApplyApplication = new Scenes.WizardScene(
 		ctx.wizard.next();
 	},
 	async ctx => {
-		if (ctx.update.callback_query.data.startsWith('?detailedApp_')) {
+		if (ctx.updateType === 'message') {
+			ctx.wizard.state.data['name'] = ctx.message.text;
+			ctx.wizard.state.data['id'] = ctx.from.id
+			const msg = await ctx.reply(
+				`<b>⚙️ Введите ИНН компании, от которой отправляется требование:</b> \n\n<i>Пример: 7877675123</i>`,
+				{
+					reply_markup: cancelKeyboard.reply_markup,
+					parse_mode: 'HTML',
+				}
+			);
+			ctx.wizard.state.deleteMessages.push(msg.message_id);
+			ctx.wizard.next();
+		} else if (ctx.update.callback_query.data.startsWith('?detailedApp_')) {
 			// Действие для кнопки с ?detailedApp_
 			ctx.wizard.state = {};
 			const applicationId = callbackData.split('_')[1]; // Получаем ID заявки из callback_data
@@ -110,19 +122,6 @@ const ApplyApplication = new Scenes.WizardScene(
 			// Действие для отмены сцены
 			await ctx.reply('Вы отменили действие.');
 			ctx.scene.leave();
-		}
-		if (ctx.updateType === 'message') {
-			ctx.wizard.state.data['name'] = ctx.message.text;
-			ctx.wizard.state.data['id'] = ctx.from.id
-			const msg = await ctx.reply(
-				`<b>⚙️ Введите ИНН компании, от которой отправляется требование:</b> \n\n<i>Пример: 7877675123</i>`,
-				{
-					reply_markup: cancelKeyboard.reply_markup,
-					parse_mode: 'HTML',
-				}
-			);
-			ctx.wizard.state.deleteMessages.push(msg.message_id);
-			ctx.wizard.next();
 		} else {
 			await ctx.reply('Пожалуйста, введите название компании.');
 		}
